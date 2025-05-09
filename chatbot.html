@@ -1,0 +1,17 @@
+<!-- index.html -->
+<textarea id="prompt"></textarea>
+<button onclick="send()">Ask</button>
+<pre id="response"></pre>
+
+<script>
+async function send() {
+  const prompt = document.getElementById("prompt").value;
+  const res = await fetch("http://YOUR_RUNPOD_IP:8000/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({prompt})
+  });
+  const data = await res.json();
+  document.getElementById("response").textContent = data.response;
+}
+</script>
