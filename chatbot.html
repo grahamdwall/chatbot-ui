@@ -7,7 +7,7 @@
 async function send() {
   const prompt = document.getElementById("prompt").value;
   try {
-    const res = await fetch("http://203.57.40.168:10205/chat", {
+    const res = await fetch("http://203.57.40.168:10052/chat", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({prompt})
