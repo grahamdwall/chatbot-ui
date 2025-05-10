@@ -6,12 +6,18 @@
 <script>
 async function send() {
   const prompt = document.getElementById("prompt").value;
-  const res = await fetch("http://203.57.40.168:10205/chat", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({prompt})
-  });
-  const data = await res.json();
-  document.getElementById("response").textContent = data.response;
+  try {
+    const res = await fetch("http://203.57.40.168:10205/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({prompt})
+    });
+    const data = await res.json();
+    console.log("Response from server:", data);
+    document.getElementById("response").textContent = data.response;
+  } catch (err) {
+    console.error("Error contacting chatbot:", err);
+    document.getElementById("response").innerText = "Error connecting to chatbot.";
+  }  
 }
 </script>
