@@ -1,11 +1,12 @@
-const chatLog = document.getElementById("chat-log");
-const chatInput = document.getElementById("chat-input");
+chatInput.addEventListener("keydown", handleChatInput);
+chatInput.addEventListener("input", () => {}); // Safari sometimes needs this to detect user input
 
-chatInput.addEventListener("keydown", async (e) => {
+async function handleChatInput(e) {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     const prompt = chatInput.value.trim();
     if (!prompt) return;
+
     addMessage(prompt, "user");
     chatInput.value = "";
 
@@ -21,9 +22,8 @@ chatInput.addEventListener("keydown", async (e) => {
       addMessage("⚠️ Error: Unable to reach chatbot.", "bot");
     }
   }
-});
-
-function addMessage(text, sender) {
+}
+ext, sender) {
   const message = document.createElement("div");
   message.className = `message ${sender}`;
   message.textContent = text;
