@@ -18,6 +18,8 @@ body {
   flex-grow: 1;
   overflow-y: auto;
   padding: 1em;
+  display: flex;
+  flex-direction: column; /* this is key */
 }
 
 .message {
