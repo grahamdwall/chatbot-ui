@@ -55,3 +55,32 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+async function sendMessage() {
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  appendMessage("user", text);
+  input.value = "";
+
+  // Show typing indicator
+  const indicator = document.createElement("div");
+  indicator.className = "message bot typing-indicator";
+  indicator.innerHTML = '<span>.</span><span>.</span><span>.</span>';
+  document.getElementById("chat-log").appendChild(indicator);
+
+  try {
+    const res = await fetch("https://api.kairosoptions.ai/chat", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({prompt: text}),
+    });
+    const data = await res.json();
+
+    indicator.remove(); // remove typing indicator
+    appendMessage("bot", data.response);
+  } catch (err) {
+    indicator.remove();
+    appendMessage("bot", "⚠️ Error: Unable to reach chatbot.");
+  }
+}
