@@ -84,6 +84,11 @@ body {
   cursor: pointer;
 }
 
+#send-button svg {
+  vertical-align: middle;
+  fill: white;
+}
+
 /* Loading animation (rolling dots) */
 .typing-indicator {
   display: inline-block;
