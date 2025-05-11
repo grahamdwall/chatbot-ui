@@ -33,7 +33,7 @@ body {
 
 .user {
   background-color: #DCF8C6; /* light green */
-  align-self: flex-end;
+  align-self: flex-start;
   margin-left: 20%;
 }
 
