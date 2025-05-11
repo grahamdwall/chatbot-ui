@@ -22,10 +22,27 @@ body {
   flex-direction: column; /* this is key */
 }
 
+.message-row {
+  display: flex;
+  width: 100%;
+  margin: 6px 0;
+}
+
+.user-row {
+  justify-content: flex-end;
+}
+
+.bot-row {
+  justify-content: flex-start;
+}
+
+.spacer {
+  flex: 0 0 20%; /* 20% of row width */
+}
+
 .message {
   max-width: 80%;
   padding: 10px 14px;
-  margin: 6px 0;
   border-radius: 10px;
   line-height: 1.4;
   word-wrap: break-word;
@@ -33,14 +50,11 @@ body {
 
 .user {
   background-color: #DCF8C6; /* light green */
-  align-self: flex-start;
-  margin-left: 20%;
 }
 
 .bot {
   background-color: #F1F0F0; /* light gray */
-  align-self: flex-end;
-  margin-right: 20%;
+}
 
 #chat-input {
   border: none;
