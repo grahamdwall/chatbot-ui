@@ -92,7 +92,7 @@ body {
 .typing-indicator {
   display: inline-block;
   margin: 6px 0;
-  font-size: 24px;
+  font-size: 36px;
 }
 
 .typing-indicator span {
