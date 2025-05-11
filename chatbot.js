@@ -1,71 +1,54 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const chatInput = document.getElementById("chat-input");
-  const sendButton = document.getElementById("send-button");
+async function sendMessage() {
+  const inputBox = document.getElementById("chat-input");
+  const message = inputBox.value.trim();
+
+  if (!message) return;  // Avoid sending empty messages
+
+  // Add user message to chat log
+  appendMessage("user", message);
+
+  // Clear input field
+  inputBox.value = "";
+
+  try {
+    // Send message to backend
+    const response = await fetch("https://api.kairosoptions.ai/chat", {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ message })
+    });
+
+    const data = await response.json();
+
+    // Add backend response to chat log
+    appendMessage("bot", data.reply);
+  } catch (error) {
+    console.error("Error sending message:", error);
+    appendMessage("bot", "Oops, something went wrong.");
+  }
+}
+
+function appendMessage(sender, messageText) {
   const chatLog = document.getElementById("chat-log");
 
-  // Send on Enter, newline on Shift+Enter
-  chatInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
+  const rowDiv = document.createElement("div");
+  rowDiv.classList.add("message-row", sender === "user" ? "user-row" : "bot-row");
 
-  sendButton.addEventListener("click", sendMessage);
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", sender);
+  messageDiv.textContent = messageText;
 
-  async function sendMessage() {
-    const prompt = chatInput.value.trim();
-    if (!prompt) return;
+  rowDiv.appendChild(messageDiv);
+  chatLog.appendChild(rowDiv);
 
-    chatInput.value = "";
+  // Auto-scroll to the bottom
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
 
-    // Add user message
-    const userRow = document.createElement("div");
-    userRow.className = "message-row user-row";
-
-    const userSpacer = document.createElement("div");
-    userSpacer.className = "spacer";
-
-    const userBubble = document.createElement("div");
-    userBubble.className = "message user";
-    userBubble.innerText = prompt;
-
-    userRow.appendChild(userSpacer);
-    userRow.appendChild(userBubble);
-    chatLog.appendChild(userRow);
-
-    // Add typing indicator
-    const botRow = document.createElement("div");
-    botRow.className = "message-row bot-row";
-
-    const botBubble = document.createElement("div");
-    botBubble.className = "message bot typing-indicator";
-    botBubble.innerHTML = "<span>.</span><span>.</span><span>.</span>";
-
-    botRow.appendChild(botBubble);
-    chatLog.appendChild(botRow);
-    chatLog.scrollTop = chatLog.scrollHeight;
-
-    try {
-      const res = await fetch("https://api.kairosoptions.ai/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
-
-      if (!res.ok) throw new Error("HTTP error " + res.status);
-
-      const data = await res.json();
-
-      // Replace typing indicator with real message
-      botBubble.classList.remove("typing-indicator");
-      botBubble.innerText = data.response || "[No reply]";
-    } catch (err) {
-      botBubble.classList.remove("typing-indicator");
-      botBubble.innerText = "⚠️ Error: Unable to reach chatbot.";
-      console.error(err);
-    }
-
-    chatLog.scrollTop = chatLog.scrollHeight;
+// Add event listeners for Enter and Shift-Enter functionality
+document.getElementById("chat-input").addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();  // Prevent default newline on Enter
+    sendMessage();
   }
 });
