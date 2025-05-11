@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chatbot</title>
-  <link rel="stylesheet" href="chatbot.css" />
+  <!-- Increment v=2 when making change to .css to bust the browser cache -->
+  <link rel="stylesheet" href="chatbot.css?v=2">
 </head>
 <body>
   <div id="chat-container">
     <div id="chat-log"></div>
-    <textarea id="chat-input" placeholder="Type a message..."></textarea>
+    <textarea id="chat-input" rows="1" placeholder="Type your message here..."></textarea>
   </div>
-  <script src="chatbot.js"></script>
+
+  <script src="chatbot.js?v=2" defer></script>
 </body>
 </html>
