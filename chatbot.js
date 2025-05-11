@@ -1,86 +1,71 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const inputBox = document.getElementById("chat-input");
+document.addEventListener("DOMContentLoaded", () => {
+  const chatInput = document.getElementById("chat-input");
+  const sendButton = document.getElementById("send-button");
   const chatLog = document.getElementById("chat-log");
 
-  inputBox.addEventListener("keydown", async function (event) {
-    if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      const prompt = inputBox.value.trim();
-      if (prompt === "") return;
-
-      appendMessage(prompt, "user");
-      inputBox.value = "";
-
-      try {
-        const res = await fetch("https://api.kairosoptions.ai/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt })
-        });
-
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await res.json();
-        appendMessage(data.response || "⚠️ No response", "bot");
-      } catch (err) {
-        appendMessage("⚠️ Error: Unable to reach chatbot.", "bot");
-        console.error(err);
-      }
+  // Send on Enter, newline on Shift+Enter
+  chatInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
     }
   });
 
-  function appendMessage(text, sender) {
-    const row = document.createElement("div");
-    row.className = `message-row ${sender}-row`;
+  sendButton.addEventListener("click", sendMessage);
 
-    const bubble = document.createElement("div");
-    bubble.className = `message ${sender}`;
-    bubble.textContent = text;
+  async function sendMessage() {
+    const prompt = chatInput.value.trim();
+    if (!prompt) return;
 
-    const spacer = document.createElement("div");
-    spacer.className = "spacer";
+    chatInput.value = "";
 
-    if (sender === "user") {
-      row.appendChild(spacer);     // Indent from left
-      row.appendChild(bubble);     // User bubble on right
-    } else {
-      row.appendChild(bubble);     // Bot bubble on left
-      row.appendChild(spacer);     // Indent from right
+    // Add user message
+    const userRow = document.createElement("div");
+    userRow.className = "message-row user-row";
+
+    const userSpacer = document.createElement("div");
+    userSpacer.className = "spacer";
+
+    const userBubble = document.createElement("div");
+    userBubble.className = "message user";
+    userBubble.innerText = prompt;
+
+    userRow.appendChild(userSpacer);
+    userRow.appendChild(userBubble);
+    chatLog.appendChild(userRow);
+
+    // Add typing indicator
+    const botRow = document.createElement("div");
+    botRow.className = "message-row bot-row";
+
+    const botBubble = document.createElement("div");
+    botBubble.className = "message bot typing-indicator";
+    botBubble.innerHTML = "<span>.</span><span>.</span><span>.</span>";
+
+    botRow.appendChild(botBubble);
+    chatLog.appendChild(botRow);
+    chatLog.scrollTop = chatLog.scrollHeight;
+
+    try {
+      const res = await fetch("https://api.kairosoptions.ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if (!res.ok) throw new Error("HTTP error " + res.status);
+
+      const data = await res.json();
+
+      // Replace typing indicator with real message
+      botBubble.classList.remove("typing-indicator");
+      botBubble.innerText = data.response || "[No reply]";
+    } catch (err) {
+      botBubble.classList.remove("typing-indicator");
+      botBubble.innerText = "⚠️ Error: Unable to reach chatbot.";
+      console.error(err);
     }
 
-    chatLog.appendChild(row);
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 });
-
-async function sendMessage() {
-  const input = document.getElementById("chat-input");
-  const text = input.value.trim();
-  if (!text) return;
-
-  appendMessage("user", text);
-  input.value = "";
-
-  // Show typing indicator
-  const indicator = document.createElement("div");
-  indicator.className = "message bot typing-indicator";
-  indicator.innerHTML = '<span>.</span><span>.</span><span>.</span>';
-  document.getElementById("chat-log").appendChild(indicator);
-
-  try {
-    const res = await fetch("https://api.kairosoptions.ai/chat", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({prompt: text}),
-    });
-    const data = await res.json();
-
-    indicator.remove(); // remove typing indicator
-    appendMessage("bot", data.response);
-  } catch (err) {
-    indicator.remove();
-    appendMessage("bot", "⚠️ Error: Unable to reach chatbot.");
-  }
-}
