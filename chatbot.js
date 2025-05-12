@@ -21,7 +21,7 @@ async function sendMessage() {
     const data = await response.json();
 
     // Add backend response to chat log
-    appendMessage("bot", data.reply);
+    appendMessage("bot", data.response);
   } catch (error) {
     console.error("Error sending message:", error);
     appendMessage("bot", "Oops, something went wrong.");
