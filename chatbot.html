@@ -9,6 +9,19 @@
 </head>
 <body>
   <div id="chat-container">
+
+    <div id="cookie-banner">
+      We use cookies to remember chat requests and replies for 60 minutes.
+      <button onclick="acceptCookies()">Accept</button>
+    </div>
+  
+    <script>
+    function acceptCookies() {
+      document.getElementById('cookie-banner').style.display = 'none';
+      document.cookie = "cookies_accepted=true; path=/; max-age=31536000"; // 1 year
+    }
+    </script>
+    
     <div id="chat-log"></div> <!-- Container for chat messages -->
 
     <!-- Place input area at the bottom -->
@@ -23,16 +36,5 @@
   </div>
   <script src="chatbot.js?v=8" defer></script>
   
-  <div id="cookie-banner">
-    We use cookies to remember chat requests and replies for 60 minutes.
-    <button onclick="acceptCookies()">Accept</button>
-  </div>
-
-  <script>
-  function acceptCookies() {
-    document.getElementById('cookie-banner').style.display = 'none';
-    document.cookie = "cookies_accepted=true; path=/; max-age=31536000"; // 1 year
-  }
-  </script>
 </body>
 </html>
