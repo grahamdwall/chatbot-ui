@@ -1,3 +1,18 @@
+function showTypingIndicator() {
+  const chatLog = document.getElementById("chat-log");
+  const typingIndicator = document.createElement("div");
+  typingIndicator.id = "typing-indicator";
+  typingIndicator.className = "typing-indicator bot-row";
+  typingIndicator.innerHTML = "<span>•</span><span>•</span><span>•</span>";
+  chatLog.appendChild(typingIndicator);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const indicator = document.getElementById("typing-indicator");
+  if (indicator) indicator.remove();
+}
+
 async function sendMessage() {
   const inputBox = document.getElementById("chat-input");
   const message = inputBox.value.trim();
@@ -10,6 +25,8 @@ async function sendMessage() {
   // Clear input field
   inputBox.value = "";
 
+  showTypingIndicator();
+  
   try {
     // Send message to backend
     const response = await fetch("https://api.kairosoptions.ai/chat", {
@@ -19,10 +36,11 @@ async function sendMessage() {
     });
 
     const data = await response.json();
-
+    removeTypingIndicator();
     // Add backend response to chat log
     appendMessage("bot", data.response);
   } catch (error) {
+    removeTypingIndicator();
     console.error("Error sending message:", error);
     appendMessage("bot", "Oops, something went wrong.");
   }
