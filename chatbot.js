@@ -42,7 +42,7 @@ async function sendMessage() {
   } catch (error) {
     removeTypingIndicator();
     console.error("Error sending message:", error);
-    appendMessage("bot", "Oops, something went wrong.");
+    appendMessage("bot", "Chatbot in maintenance, please try again later.");
   }
 }
 
