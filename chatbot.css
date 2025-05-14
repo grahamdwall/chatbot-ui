@@ -64,10 +64,12 @@ body {
 
 .user {
   background-color: #DCF8C6; /* light green */
+  color: #000000;
 }
 
 .bot {
   background-color: #F1F0F0; /* light gray */
+  color: #000000;
 }
 
 #chat-input-area {
