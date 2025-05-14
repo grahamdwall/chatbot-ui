@@ -7,7 +7,7 @@ body {
 #chat-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;  /* ✅ accounts for virtual keyboard on mobile */
   max-width: 600px;
   margin: auto;
   background: white;
@@ -73,11 +73,14 @@ body {
 }
 
 #chat-input-area {
+  position: sticky;
+  bottom: 0;
   display: flex;
   align-items: center;
   border-top: 1px solid #232b2b; /* Gun Metal accent */
   padding: 1em;
   background: #D8D5BC; /* ✅ Pearl background */
+  z-index: 10;
 }
 
 #chat-input {
