@@ -1,3 +1,9 @@
+let sessionId = localStorage.getItem("chat_session_id");
+if (!sessionId) {
+  sessionId = crypto.randomUUID();
+  localStorage.setItem("chat_session_id", sessionId);
+}
+
 function showTypingIndicator() {
   const chatLog = document.getElementById("chat-log");
   const typingIndicator = document.createElement("div");
