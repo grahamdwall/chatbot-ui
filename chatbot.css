@@ -73,9 +73,9 @@ body {
 #chat-input-area {
   display: flex;
   align-items: center;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #232b2b; /* Gun Metal accent */
   padding: 1em;
-  background: #fff;
+  background: #D8D5BC; /* ✅ Pearl background */
 }
 
 #chat-input {
