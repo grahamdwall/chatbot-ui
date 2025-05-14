@@ -70,3 +70,11 @@ document.getElementById("chat-input").addEventListener("keydown", (event) => {
     sendMessage();
   }
 });
+
+// Ensure chat stays scrolled when keyboard appears
+document.getElementById('chat-input').addEventListener('focus', () => {
+  setTimeout(() => {
+    const chatLog = document.getElementById("chat-log");
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }, 300);  // allow keyboard to settle first
+});
