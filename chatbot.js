@@ -38,7 +38,7 @@ async function sendMessage() {
     const response = await fetch("https://api.kairosoptions.ai/chat", {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ prompt: message })
+      body: JSON.stringify({ session_id: sessionId,  prompt: message  })
     });
 
     const data = await response.json();
