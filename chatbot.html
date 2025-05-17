@@ -9,18 +9,6 @@
 </head>
 <body>
   <div id="chat-container">
-
-    <div id="cookie-banner">
-      We use cookies to keep track of our conversation for 60 minutes.
-      <button onclick="acceptCookies()">Accept</button>
-    </div>
-  
-    <script>
-    function acceptCookies() {
-      document.getElementById('cookie-banner').style.display = 'none';
-      document.cookie = "cookies_accepted=true; path=/; max-age=31536000"; // 1 year
-    }
-    </script>
     
     <div id="chat-log"></div> <!-- Container for chat messages -->
 
