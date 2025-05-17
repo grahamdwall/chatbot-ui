@@ -22,20 +22,6 @@ body {
   flex-direction: column; /* this is key */
 }
 
-#cookie-banner {
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #ddd;
-  padding: 0.5em;
-  text-align: center;
-  font-size: 14px;
-}
-
-#cookie-banner button {
-  margin-left: 8px;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-
 .message-row {
   display: flex;
   width: 100%;
